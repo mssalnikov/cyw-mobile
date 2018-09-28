@@ -6,12 +6,29 @@ import {
     View,
 } from 'react-native'
 
+import { connect }  from 'react-redux'
+
 
 import styled from 'styled-components/native'
+import { createLogin } from 'actions/user'
 
-export default class HomeScreen extends React.Component {
+class LoginScreen extends React.Component {
     static navigationOptions = {
         title: 'Login',
+    }
+
+    state = {
+
+    }
+
+    static getDerivedStateFromProps(props) {
+        if (props.user.success) {
+            props.navigation.replace('Home')
+            return {}
+        }
+        return {
+            peinding: props.user.pending,
+        }
     }
 
     render() {
@@ -37,9 +54,8 @@ export default class HomeScreen extends React.Component {
             const user = await response.json()
             const avatar = `https://graph.facebook.com/${user.id}/picture?height=300`
 
-            console.log(user)
-
-            this.props.navigation.push('Home', { name: user.name, avatar })
+            this.props.login(user.id, result.token)
+            // this.props.navigation.push('Home', { name: user.name, avatar })
 
         } catch (err) {
             console.log('err', err)
@@ -72,3 +88,12 @@ const LoginText = styled.Text`
     color: #3a5998;
 `
 
+const mapStateToProps = state => ({
+    user: state.user
+})
+
+const mapDispatchToProps = dispatch => ({
+    login: (fbid, fbtoken) => dispatch(createLogin(fbid, fbtoken))
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(LoginScreen)

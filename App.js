@@ -4,7 +4,10 @@ import { AppLoading } from 'expo'
 import { AppNavigator } from './navigation/AppNavigator'
 
 import styled, { ThemeProvider }  from 'styled-components'
+import { Provider } from 'react-redux'
+
 import theme from './theme'
+import { store } from './state/store'
 
 export default class App extends React.Component {
   state = {
@@ -22,12 +25,14 @@ export default class App extends React.Component {
       );
     } else {
       return (
-        <ThemeProvider theme={theme}>
-          <Container>
-            {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
-            <AppNavigator />
-          </Container>
-        </ThemeProvider>
+        <Provider store={store}>
+          <ThemeProvider theme={theme}>
+            <Container>
+              {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
+              <AppNavigator />
+            </Container>
+          </ThemeProvider>
+        </Provider>
       )
     }
   }

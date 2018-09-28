@@ -1,5 +1,6 @@
 import React    from 'react'
 import { View, Text, Image, TouchableOpacity }    from 'react-native'
+import { withNavigation }   from 'react-navigation'
 import styled       from 'styled-components'
 
 const Events = ({ events, navigation }) => (
@@ -18,6 +19,7 @@ const Container = styled.View`
     display: flex;
     flex-direction: column;
     width: 100%;
+    padding: 20px;
 `
 
 const Event = styled.TouchableOpacity`
@@ -34,4 +36,4 @@ const Title = styled.Text`
     font-size: 14px;
 `
 
-export default Events
+export default withNavigation(Events)

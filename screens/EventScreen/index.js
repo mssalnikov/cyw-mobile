@@ -70,6 +70,7 @@ const Button = styled.TouchableOpacity`
 
     margin-top: auto;
     width: 200px;
+    background: white;
 `
 
 const ButtonText = styled.Text`
