@@ -7,7 +7,7 @@ import {
 } from 'react-native'
 
 import { connect }  from 'react-redux'
-
+import Container from 'components/Container'
 
 import styled from 'styled-components/native'
 import { createLogin } from 'actions/user'
@@ -22,7 +22,7 @@ class LoginScreen extends React.Component {
     }
 
     static getDerivedStateFromProps(props) {
-        if (props.user.success) {
+        if (props.user.success || props.user.auth_token) {
             props.navigation.replace('Home')
             return {}
         }
@@ -62,14 +62,6 @@ class LoginScreen extends React.Component {
         }
     }
 }
-
-const Container = styled.View`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
-`
 
 const Link = styled.TouchableOpacity`
   display: flex;

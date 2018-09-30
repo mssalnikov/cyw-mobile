@@ -4,7 +4,7 @@ export const createHeaders = token => {
     }
 
     if (token != null) {
-        headers['x-token'] = token
+        headers['auth_token'] = token
     }
 
     return headers

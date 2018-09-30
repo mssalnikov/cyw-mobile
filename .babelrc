@@ -9,7 +9,8 @@
           "alias": {
             "actions": "./state/actions",
             "utils": "./utils",
-            "components": "./components"
+            "components": "./components",
+            "config": "./config.js"
           }
         }]
       ]

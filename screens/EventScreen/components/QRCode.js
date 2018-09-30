@@ -4,7 +4,7 @@ import { BarCodeScanner, Permissions } from 'expo'
 import { Text, StyleSheet } from 'react-native'
 
 
-class QRCodeScreen extends React.Component {
+class QRCode extends React.Component {
     static navigationOptions = {
         title: 'Scan the code'
     }
@@ -53,4 +53,4 @@ const Container = styled.View`
     height: 100%;
 `
 
-export default QRCodeScreen
+export default QRCode

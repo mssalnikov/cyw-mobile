@@ -1,5 +1,5 @@
 import React from 'react'
-import { Platform, StatusBar, View } from 'react-native'
+import { Platform, StatusBar, AsyncStorage } from 'react-native'
 import { AppLoading } from 'expo'
 import { AppNavigator } from './navigation/AppNavigator'
 
@@ -38,6 +38,10 @@ export default class App extends React.Component {
   }
 
   _loadResourcesAsync = async () => {
+    const token = await AsyncStorage.getItem("token")
+    if (token != null) {
+      console.log('tk', token)
+    }
     return new Promise(r => r())
   };
 

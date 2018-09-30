@@ -25,7 +25,12 @@
     },
     "android": {
       "permissions": ["android.permission.INTERNET"],
-      "package": "ru.cyw"
+      "package": "ru.cyw",
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyDDwxbcMtDiXis4mE8GZHAFADsts8rAtCo"
+        }
+      }
     },
     "facebookScheme": "fb165722150506689",
     "facebookAppId": "165722150506689",

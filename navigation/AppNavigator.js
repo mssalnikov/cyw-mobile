@@ -4,23 +4,25 @@ import LoginScreen from '../screens/LoginScreen'
 import HomeScreen  from '../screens/HomeScreen'
 import EventScreen  from '../screens/EventScreen'
 import CreateEventScreen from '../screens/CreateEventScreen'
-import QuestionScreen from '../screens/QuestionScreen'
-import QRCodeScreen from '../screens/QRCodeScreen'
+import CreatePointScreen from '../screens/CreatePointScreen'
 
-// export const AppNavigator = createStackNavigator({
-//     Home: {
-//         screen: HomeScreen,
-//         navigationOptions: {
-//             title: 'Events'
-//         }
-//     },
-//     Login: LoginScreen,
-//     Event: EventScreen
-// },
-// {
-//     initialRouteName: 'Login'
-// })
 
 export const AppNavigator = createStackNavigator({
-    Home: QRCodeScreen
+    Home: {
+        screen: HomeScreen,
+        navigationOptions: {
+            title: 'Events'
+        }
+    },
+    Login: LoginScreen,
+    Event: EventScreen,
+    CreateEvent: CreateEventScreen,
+    CreatePoint: CreatePointScreen
+},
+{
+    initialRouteName: 'Login'
 })
+
+// export const AppNavigator = createStackNavigator({
+//     Home: QRCodeScreen
+// })

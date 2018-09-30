@@ -1,38 +1,43 @@
+import { AsyncStorage } from "react-native"
+
 import { createHeaders } from "utils"
+import { url }  from 'config'
 
 export const LOGIN = 'LOGIN'
 export const LOGIN_SUCCES = 'LOGIN_SUCCESS'
 export const LOGIN_FAIL = 'LOGIN_FAIL'
 
-const url = 'http://10.0.1.25:9000'
-
-export const createLogin = (fbid, fbtoken) => dispatch => {
+export const createLogin = (fbid, fbtoken) => async (dispatch) => {
     dispatch({
         type: LOGIN
     })
-    fetch(`${url}/api/login`, {
-        method: 'POST',
-        headers: createHeaders(),
-        body: JSON.stringify({
-            fbid,
-            fbtoken
-        })
-    })
-        .then(res => {
-            if (res.status != 200) {
-                return res().then(text => Promise.reject(text))
-            }
-            return res.json()
-        }).then(json => {
-            return dispatch({
-                type: LOGIN_SUCCES,
-                payload: json
-            })
-        }).catch(err => {
-            console.log(err)
-            return dispatch({
-                type: LOGIN_FAIL,
-                payload: err
+    try {
+        const res = await fetch(`${url}/auth`, {
+            method: 'POST',
+            headers: createHeaders(),
+            body: JSON.stringify({
+                fbAccessToken: fbtoken
             })
         })
+        
+        if (res.status != 200) {
+            return Promise.reject(await res.text())
+        }
+
+        const json = await res.json()
+
+        await AsyncStorage.setItem('token', json.data.auth_token)
+        
+        return dispatch({
+            type: LOGIN_SUCCES,
+            payload: json.data
+        })
+
+    } catch (err) {
+        console.log(err)
+        return dispatch({
+            type: LOGIN_FAIL,
+            payload: err
+        })
+    }
 }

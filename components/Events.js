@@ -8,7 +8,7 @@ const Events = ({ events, navigation }) => (
         {
             events.map((el, i) => (
                 <Event key={i} onPress={() => navigation.push('Event', { event: el })}>
-                    <Title>{el.title}</Title>
+                    <Title>{el.name}</Title>  
                 </Event>
             ))
         }
@@ -19,13 +19,11 @@ const Container = styled.View`
     display: flex;
     flex-direction: column;
     width: 100%;
-    padding: 20px;
 `
 
 const Event = styled.TouchableOpacity`
     margin: 2px 0;
     border: 1px solid ${props => props.theme.colors.title};
-    elevation: 2;
     padding: 10px;
     width: 100%;
     background: white;
