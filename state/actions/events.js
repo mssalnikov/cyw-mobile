@@ -28,7 +28,6 @@ export const createGetMyEvents = () => async (dispatch) => {
             return Promise.reject(await res.text())
         }
         const json = await res.json()
-        console.log('j', json)
         return dispatch({
             type: GET_MY_EVENTS_SUCCES,
             payload: json.data
@@ -56,19 +55,14 @@ export const createEvent = (event) => async (dispatch) => {
                     lng: p.coordinate.longitude,
                     name: p.name,
                     question: p.question,
-                    answer: p.answer
+                    answer: p.answer,
+                    token: p.token
                 }))
             })
         })
         if (res.status != 200) {
             return Promise.reject(await res.text())
         }
-        // const json = await res.json()
-        // console.log('j', json)
-        // return dispatch({
-        //     type: CREATE_EVENT_SUCCES,
-        //     payload: json.data
-        // })
         return dispatch(createGetMyEvents())
     } catch (err) {
         return dispatch({
@@ -87,7 +81,6 @@ export const createGetEvent = (id) => async (dispatch) => {
             return Promise.reject(await res.text())
         }
         const json = await res.json()
-        console.log('j', json)
         return dispatch({
             type: GET_EVENT_SUCCES,
             payload: json.data

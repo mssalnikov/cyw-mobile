@@ -6,8 +6,7 @@ export const event = (state={}, action) => {
         case GET_EVENT:
             return { pending: true }
         case GET_EVENT_SUCCES:
-            console.log(action)
-            return { data: [...action.payload], success: true }
+            return { data: {...action.payload}, success: true }
         case GET_EVENT_FAIL:
             return { error: 403 }
         default:

@@ -35,7 +35,6 @@ class CreateEventScreen extends React.Component {
     }
 
     _addPoint = () => {
-        console.log('add')
         this.props.navigation.navigate('CreatePoint', {
             context: this.state
         })

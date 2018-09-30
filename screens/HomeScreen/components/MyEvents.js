@@ -17,7 +17,6 @@ class MyEvents extends React.Component {
     }
 
     static getDerivedStateFromProps(props) {
-        console.log('pev', props.events)
         if (props.events.success) {
             return { pending: false }
         } else {
@@ -30,7 +29,6 @@ class MyEvents extends React.Component {
         if (pending) return <Container></Container>
 
         const { events: { data: events }} = this.props 
-        console.log('ev', events)
         return (
             <Container>
                 {events.length == 0 && 

@@ -26,7 +26,11 @@ class Question extends React.Component {
                     <Answer>
                         Answer
                     </Answer>
-                    <Input onTextChange={answer => this.setState({ answer })} value={this.state.answer}/>
+                    <Input 
+                        onChangeText={answer => this.setState({ answer })} 
+                        underlineColorAndroid={'transparent'}
+                        value={this.state.answer}
+                    />
                 </Wrapper>
                 <Button
                     title={"Submit"}
@@ -37,15 +41,22 @@ class Question extends React.Component {
     }
 
     _onAnswer = async () => {
+        console.log({
+            point_id: this.props.id,
+            answer: this.state.answer
+        })
         const res = await fetch(`${url}/answer_question`, {
             method: 'POST',
             headers: createHeaders(await AsyncStorage.getItem('token')),
             body: JSON.stringify({
-                pointId: this.props.id,
+                point_id: this.props.id,
                 answer: this.state.answer
             })
         })
-        const json = await res.json()
+        console.log(res.status)
+        if (res.status == 200) {
+            this.props.onSuccess(this.props.id)
+        }
         
     }
 }
@@ -57,6 +68,7 @@ const Wrapper = styled.View`
 
 const Q = styled.Text`
     font-size: 16px;
+    width: 100%;
 `
 
 const Answer = styled.Text`

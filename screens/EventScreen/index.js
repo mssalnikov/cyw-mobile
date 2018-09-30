@@ -25,11 +25,11 @@ class EventScreen extends React.Component {
     }
 
     static getDerivedStateFromProps(props) {
-        console.log('pev', props.event)
+        // console.log(props.event)
         if (props.event.success) {
-            const points = props.event.points
+            const points = props.event.data.points || []
             const step = points.reduce((acc, el, i) => el.is_found ? i + 1: acc , -1)
-            return { pending: false, event: props.event }
+            return { pending: false, event: props.event, step: step }
         } else {
             return { pending: true }
         }
@@ -43,8 +43,10 @@ class EventScreen extends React.Component {
         if (this.state.pending) return <Container></Container>
 
         const { name, description, id } = this.props.navigation.state.params.event
-        const { points } = this.state.event.points
-        const { step, stage } = this.state
+        const { points } = this.state.event.data
+        const { step} = this.state
+
+        console.log('t', step)
 
         if (step < 0)
             return (
@@ -53,20 +55,18 @@ class EventScreen extends React.Component {
                     <Description>
                         { description }
                     </Description>
-                    <Button title={'Join'} onPress={async () => {
-                        // await fetch()
-                        this.setState({ point: 0 })
-                    }}/>
+                    <Button title={'Join'} onPress={this._joinEvent}/>
                 </Container>
             )
         else if (step >= points.length ) {
             return (
                 <Container>
-                    <Title>You've completed the event</Title>
+                    <Title>You've completed the event!</Title>
                 </Container>
             )
         }
         else {
+            // console.log('ste', step, points)
             const point = points[step]
             if (!point.is_solved) {
                 return <Question
@@ -77,35 +77,48 @@ class EventScreen extends React.Component {
             } else {
                 return <QRCode 
                     id={point.id}
+                    url={`https://staging.naviaddress.com/${point.container}/${point.naviaddress}`}
                     onSuccess={this._qrSuccess}
                 />
             }
         }
     }
 
+    _joinEvent = async () => {
+        // console.log('s', this.state.event.data, 'p', this.props.event.data)
+        await fetch(`${url}/join_event?id=${this.state.event.data.id}`, { method: 'POST', headers: createHeaders(await AsyncStorage.getItem('token')) })
+        await this.props.getEvent(this.state.event.data.id)
+        this.setState({ step: 0 })
+    }
+
     _questionSuccess = async (id) => {
         const res = await fetch(`${url}/point?id=${id}`, { headers: createHeaders(await AsyncStorage.getItem('token')) })
-        const json = res.json()
+        const json = await res.json() 
+        console.log('j', json, this.state.event)
         this.setState(prev => ({
             event: {
                 ...prev.event,
-                points: prev.event.points.map(el => {
-                    if (el.id == id)
-                        return json.data
-                    return el
-                })
+                data: {
+                    ...prev.event.data,
+                    points: prev.event.data.points.map(el => {
+                        if (el.id == id)
+                            return json.data
+                        return el
+                    })
+                }
             }
         }))
     }
 
     _qrSuccess = () => {
+        console.log('success qr')
         this.setState(prev => {
-            const step = prev.step++
+            const step = prev.step + 1
             // if (step >= prev.event.points.length) {
             //     this.setState({ finish: true })
             //     return
             // }
-            this.setState({ step: step })
+           return { step: step }
         })
     }
 }
